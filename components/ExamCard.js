@@ -15,10 +15,7 @@ export default function ExamCard({ exam, daysLeft, urgencyClasses, urgencyLabel,
   const style = categoryStyles[exam.category] || { badge: "bg-navy-50 text-navy-700 border-navy-200", dot: "bg-navy-500" };
 
   return (
-    <a
-      href={exam.url}
-      target="_blank"
-      rel="noopener noreferrer"
+    <div
       className="group block bg-white rounded-2xl border border-navy-100 shadow-card hover:shadow-card-hover hover:border-navy-200 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden"
     >
       {/* Top accent */}
