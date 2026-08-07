@@ -120,6 +120,19 @@ export default function Home({ exams }) {
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={t.siteName} />
+        <link rel="canonical" href="https://exam-notify.vercel.app" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Exam Notice Board",
+          "url": "https://exam-notify.vercel.app",
+          "description": "Real-time government job notifications for India — UPSC, SSC, IBPS, Railways, Defense, State PSCs.",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://exam-notify.vercel.app?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }) }} />
       </Head>
       <main className="min-h-screen font-sans text-navy-900 bg-navy-50/30">
         <Header totalExams={exams.length} urgentCount={urgentCount} />

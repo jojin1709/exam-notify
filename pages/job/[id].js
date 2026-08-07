@@ -38,7 +38,28 @@ export default function JobDetail({ exam, allExams }) {
 
   return (
     <>
-      <Head><title>{exam.title} \u2014 {t.siteName}</title></Head>
+      <Head>
+        <title>{exam.title} \u2014 {t.siteName}</title>
+        <meta name="description" content={`${exam.source} notification \u2014 ${exam.title}. ${exam.salary ? `Salary: ${exam.salary}.` : ""} Apply before ${exam.lastDate || "deadline"}.`} />
+        <meta property="og:title" content={exam.title} />
+        <meta property="og:description" content={`${exam.source} \u2014 ${exam.title}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content="https://exam-notify.vercel.app/og-image.svg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <link rel="canonical" href={`https://exam-notify.vercel.app/job/${exam.id}`} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "JobPosting",
+          "title": exam.title,
+          "datePosted": exam.publishedDate || undefined,
+          "validThrough": exam.lastDate || undefined,
+          "employmentType": "FULL_TIME",
+          "hiringOrganization": { "@type": "Organization", "name": exam.source },
+          "jobLocation": { "@type": "Place", "address": { "@type": "PostalAddress", "addressCountry": "IN" } },
+          "description": `${exam.source} notification. ${exam.salary ? `Salary: ${exam.salary}.` : ""} ${exam.eligibility || ""}`,
+          "url": exam.url,
+        }) }} />
+      </Head>
       <main className="min-h-screen bg-navy-50/30">
         <div className="bg-navy-900 text-white sticky top-0 z-40">
           <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
