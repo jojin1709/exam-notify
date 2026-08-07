@@ -53,7 +53,7 @@ export default function Footer() {
             </p>
             <div className="mt-4 flex items-center gap-2 text-[11px] text-white/30">
               <span className="w-1.5 h-1.5 rounded-full bg-ashoka-500 animate-pulse" />
-              System auto-updates every 4 hours
+              System auto-updates every 1 hour
             </div>
           </div>
         </div>
