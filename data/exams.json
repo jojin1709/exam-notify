@@ -345,5 +345,137 @@
     "url": "https://www.ibps.in/index.php/specialist-officers",
     "source": "IBPS",
     "location": "All India"
+  },
+  {
+    "id": "upsc-examination",
+    "title": "Examination",
+    "category": "UPSC",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-07",
+    "url": "https://www.upsc.gov.in/",
+    "source": "UPSC",
+    "location": "All India"
+  },
+  {
+    "id": "upsc-active-examinations",
+    "title": "Active Examinations",
+    "category": "UPSC",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-07",
+    "url": "https://www.upsc.gov.in/examinations/active-exams",
+    "source": "UPSC",
+    "location": "All India"
+  },
+  {
+    "id": "upsc-forthcoming-examinations",
+    "title": "Forthcoming Examinations",
+    "category": "UPSC",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-07",
+    "url": "https://www.upsc.gov.in/examinations/forthcoming-exams",
+    "source": "UPSC",
+    "location": "All India"
+  },
+  {
+    "id": "upsc-marks-of-recommended-candidates-reserve-list",
+    "title": "Marks of Recommended Candidates (Reserve List)",
+    "category": "UPSC",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-07",
+    "url": "https://www.upsc.gov.in/examinations/marks-recommended-candidates-reserve-list",
+    "source": "UPSC",
+    "location": "All India"
+  },
+  {
+    "id": "upsc-representation-on-question-papers",
+    "title": "Representation on Question Papers",
+    "category": "UPSC",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-07",
+    "url": "https://www.upsc.gov.in/recruitment/time-frame-representation",
+    "source": "UPSC",
+    "location": "All India"
+  },
+  {
+    "id": "upsc-recruitment",
+    "title": "Recruitment",
+    "category": "UPSC",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-07",
+    "url": "https://www.upsc.gov.in/",
+    "source": "UPSC",
+    "location": "All India"
+  },
+  {
+    "id": "upsc-status-of-lateral-recruitment-cases-advertisement-wise",
+    "title": "Status of Lateral Recruitment Cases (Advertisement-wise)",
+    "category": "UPSC",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-07",
+    "url": "https://www.upsc.gov.in/recruitment/lateral-recruitments",
+    "source": "UPSC",
+    "location": "All India"
+  },
+  {
+    "id": "upsc-online-recruitment-application-ora",
+    "title": "Online Recruitment Application (ORA)",
+    "category": "UPSC",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-07",
+    "url": "https://upsconline.nic.in/ora/",
+    "source": "UPSC",
+    "location": "All India"
+  },
+  {
+    "id": "upsc-status-of-recruitment-cases-advertisement-wise",
+    "title": "Status of Recruitment Cases (Advertisement-wise)",
+    "category": "UPSC",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-07",
+    "url": "https://www.upsc.gov.in/recruitment/status-recruitment-cases-advertisementwise",
+    "source": "UPSC",
+    "location": "All India"
+  },
+  {
+    "id": "upsc-recruitment-tests",
+    "title": "Recruitment Tests",
+    "category": "UPSC",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-07",
+    "url": "https://www.upsc.gov.in/recruitment/recruitment-test",
+    "source": "UPSC",
+    "location": "All India"
+  },
+  {
+    "id": "upsc-recruitment-requisition",
+    "title": "Recruitment Requisition",
+    "category": "UPSC",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-07",
+    "url": "https://www.upsc.gov.in/recruitment/recruitment-requisition",
+    "source": "UPSC",
+    "location": "All India"
+  },
+  {
+    "id": "upsc-recruitment-cases-kept-on-hold-on-account-of-pending-litigations",
+    "title": "Recruitment cases kept on hold on account of Pending Litigations",
+    "category": "UPSC",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-07",
+    "url": "https://www.upsc.gov.in/recruitment/recruitment-cases-kept-hold-account-pending-litigations",
+    "source": "UPSC",
+    "location": "All India"
   }
 ]
