@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="50%" style="stop-color:#1e293b"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="60" y="60" width="1080" height="510" rx="24" fill="none" stroke="#334155" stroke-width="2"/>
+  <rect x="60" y="60" width="1080" height="4" rx="2" fill="#f97316"/>
+  <text x="600" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="600" fill="#94a3b8" letter-spacing="4">GOVERNMENT JOBS</text>
+  <text x="600" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="64" font-weight="800" fill="#f1f5f9">Exam Notice Board</text>
+  <text x="600" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="24" fill="#94a3b8">All India Government Job Notifications</text>
+  <text x="600" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" fill="#64748b">UPSC  |  SSC  |  IBPS  |  RRB  |  Defense  |  State PSCs</text>
+  <rect x="350" y="420" width="500" height="56" rx="28" fill="#f97316"/>
+  <text x="600" y="456" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#ffffff">exam-notify.vercel.app</text>
+  <text x="600" y="540" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" fill="#475569">Auto-updated every hour | 100% Free | No Login Required</text>
+  <circle cx="100" cy="560" r="6" fill="#22c55e"/>
+  <text x="116" y="565" font-family="system-ui, sans-serif" font-size="14" fill="#64748b">Live — Auto-updated</text>
+</svg>
