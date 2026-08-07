@@ -3,7 +3,12 @@ name: Scrape exam notifications
 on:
   schedule:
     - cron: "0 * * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Force scrape even if no changes"
+        required: false
+        default: "false"
 
 permissions:
   contents: write
@@ -11,6 +16,7 @@ permissions:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -29,15 +35,18 @@ jobs:
 
       - name: Run scraper
         run: npm run scrape
+        env:
+          CI: true
 
       - name: Commit and push if data changed
         run: |
           git config user.name "exam-notify-bot"
           git config user.email "actions@github.com"
-          if ! git diff --quiet -- data/exams.json; then
-            git add data/exams.json
-            git commit -m "chore: update exam notifications [automated]"
+          git add data/exams.json
+          if ! git diff --quiet --cached -- data/exams.json; then
+            git commit -m "chore: update exam notifications [automated] $(date -u +%Y-%m-%dT%H:%M:%SZ)"
             git push
+            echo "✅ Data updated and pushed."
           else
-            echo "No changes to data/exams.json — nothing to commit."
+            echo "ℹ️ No changes to data/exams.json — nothing to commit."
           fi
