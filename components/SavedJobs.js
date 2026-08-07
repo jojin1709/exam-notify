@@ -18,10 +18,10 @@ export default function SavedJobs() {
   if (bookmarks.length === 0) return null;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
       <button
         onClick={() => setShow(!show)}
-        className="flex items-center gap-2 px-4 py-2 bg-saffron-50 border border-saffron-200 rounded-xl text-saffron-700 text-sm font-semibold hover:bg-saffron-100 transition-colors"
+        className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-saffron-50 border border-saffron-200 rounded-xl text-saffron-700 text-xs sm:text-sm font-semibold hover:bg-saffron-100 transition-colors"
       >
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
           <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
@@ -33,19 +33,19 @@ export default function SavedJobs() {
       </button>
 
       {show && (
-        <div className="mt-3 bg-white rounded-xl border border-navy-100 shadow-card p-4">
+        <div className="mt-3 bg-white rounded-xl border border-navy-100 shadow-card p-3 sm:p-4">
           <div className="space-y-2">
             {bookmarks.map((b) => (
-              <div key={b.id} className="flex items-center justify-between py-2 border-b border-navy-100/50 last:border-0">
-                <div>
-                  <p className="text-sm font-medium text-navy-900 line-clamp-1">{b.title}</p>
-                  <p className="text-[11px] text-navy-400">{b.source}</p>
+              <div key={b.id} className="flex items-center justify-between py-2 border-b border-navy-100/50 last:border-0 gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm font-medium text-navy-900 line-clamp-1">{b.title}</p>
+                  <p className="text-[10px] sm:text-[11px] text-navy-400">{b.source}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <a href={`/job/${b.id}`} className="text-xs font-medium text-navy-600 hover:text-navy-800">
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <a href={`/job/${b.id}`} className="text-[11px] sm:text-xs font-medium text-navy-600 hover:text-navy-800">
                     View
                   </a>
-                  <button onClick={() => remove(b.id)} className="text-xs text-danger-500 hover:text-danger-700">
+                  <button onClick={() => remove(b.id)} className="text-[11px] sm:text-xs text-danger-500 hover:text-danger-700">
                     Remove
                   </button>
                 </div>

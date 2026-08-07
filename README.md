@@ -31,13 +31,22 @@ Government job aspirants miss deadlines because notifications are scattered acro
 - **Multi-source** — Kerala PSC, UPSC, SSC, IBPS, RRB, Defense, State PSCs
 - **Dark mode** — Toggle for comfortable night browsing
 - **PWA** — Install as an app on your phone
+- **Multi-language** — English, Malayalam, Hindi, Tamil
 - **Share** — WhatsApp, Telegram, Twitter, copy link
 - **Bookmark** — Save jobs for later
+- **Application tracker** — Not Applied / Interested / Applied / Exam Done
+- **Countdown timer** — Live seconds countdown on each notification
+- **Salary info** — Pay scale displayed on cards and detail pages
+- **Eligibility filter** — Education, age limit, caste category filters
+- **Exam pattern** — Written exam, interview details
+- **Previous papers** — Download links for past year papers
+- **Related jobs** — Suggested notifications on each detail page
+- **Calendar** — Add deadline to Google Calendar
 - **Job details** — Full info page for each notification
 - **Search & filter** — By category, source, location
 - **Urgency alerts** — Color-coded deadline indicators
 - **API & RSS** — For developers and feed readers
-- **Mobile-first** — Responsive design for all devices
+- **Mobile-first** — Fully responsive design for all devices
 
 ## Live Demo
 

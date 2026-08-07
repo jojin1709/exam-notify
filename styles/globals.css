@@ -151,3 +151,19 @@ input:focus-visible {
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 .dark ::-webkit-scrollbar-track { background: #0b1120; }
 .dark ::-webkit-scrollbar-thumb { background: #334155; }
+
+/* Hide scrollbar for filter tabs */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Mobile touch improvements */
+@media (max-width: 640px) {
+  html { -webkit-tap-highlight-color: transparent; }
+  button, a { -webkit-touch-callout: none; }
+}
+
+/* Safe area for notch devices */
+@supports (padding-top: env(safe-area-inset-top)) {
+  header { padding-top: env(safe-area-inset-top); }
+  footer { padding-bottom: env(safe-area-inset-bottom); }
+}
