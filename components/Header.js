@@ -1,3 +1,5 @@
+import DarkModeToggle from "./DarkModeToggle";
+
 export default function Header({ totalExams, urgentCount }) {
   return (
     <header className="bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 text-white">
@@ -10,7 +12,16 @@ export default function Header({ totalExams, urgentCount }) {
               Live — Auto-updated from official sources
             </span>
           </div>
-          <div className="hidden sm:flex items-center gap-4 text-[11px] font-medium text-white/50">
+          <div className="hidden sm:flex items-center gap-3 text-[11px] font-medium text-white/50">
+            <a href="/api/rss" target="_blank" className="flex items-center gap-1 hover:text-white/80 transition-colors">
+              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+              RSS
+            </a>
+            <a href="/api/jobs" target="_blank" className="flex items-center gap-1 hover:text-white/80 transition-colors">
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+              API
+            </a>
+            <span className="w-1 h-1 rounded-full bg-white/30" />
             <span>100% Free</span>
             <span className="w-1 h-1 rounded-full bg-white/30" />
             <span>No Login Required</span>
@@ -18,6 +29,7 @@ export default function Header({ totalExams, urgentCount }) {
             <span>Official Sources Only</span>
             <span className="w-1 h-1 rounded-full bg-white/30" />
             <span className="text-saffron-400/80">Built by <strong>JOJIN JOHN</strong></span>
+            <DarkModeToggle />
           </div>
         </div>
       </div>

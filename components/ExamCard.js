@@ -79,7 +79,7 @@ export default function ExamCard({ exam, daysLeft, urgencyClasses, urgencyLabel,
           )}
         </div>
 
-        {/* Bottom: urgency + apply */}
+        {/* Bottom: urgency + view details */}
         <div className="flex items-center justify-between pt-3 border-t border-navy-100/50">
           <span
             className={`inline-flex items-center gap-1.5 font-semibold text-xs px-2.5 py-1 rounded-full ${urgencyClasses(
@@ -98,17 +98,17 @@ export default function ExamCard({ exam, daysLeft, urgencyClasses, urgencyLabel,
             {urgencyLabel(days)}
           </span>
 
-          <span className="inline-flex items-center gap-1 text-[11px] text-navy-400 font-medium">
-            {exam.lastDate
-              ? new Date(exam.lastDate).toLocaleDateString("en-IN", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                })
-              : "Check website"}
-          </span>
+          <a
+            href={`/job/${exam.id}`}
+            className="inline-flex items-center gap-1 text-xs font-semibold text-navy-600 group-hover:text-navy-800 transition-colors"
+          >
+            View Details
+            <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
         </div>
       </div>
-    </a>
+    </div>
   );
 }

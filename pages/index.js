@@ -6,6 +6,8 @@ import FilterBar from "@/components/FilterBar";
 import ExamCard from "@/components/ExamCard";
 import EmptyState from "@/components/EmptyState";
 import Footer from "@/components/Footer";
+import SavedJobs from "@/components/SavedJobs";
+import PwaInstall from "@/components/PwaInstall";
 
 function daysLeft(dateStr) {
   if (!dateStr) return null;
@@ -114,6 +116,8 @@ export default function Home({ exams }) {
       <main className="min-h-screen font-sans text-navy-900 bg-navy-50/30">
         <Header totalExams={exams.length} urgentCount={urgentCount} />
 
+        <PwaInstall />
+
         <FilterBar
           categories={categories}
           category={category}
@@ -154,6 +158,8 @@ export default function Home({ exams }) {
             </div>
           )}
         </section>
+
+        <SavedJobs />
 
         <Footer />
       </main>
