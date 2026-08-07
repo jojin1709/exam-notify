@@ -1,0 +1,41 @@
+name: Scrape exam notifications
+
+on:
+  schedule:
+    # Runs every 4 hours. Adjust the cron if you want it more/less frequent.
+    - cron: "0 */4 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run scraper
+        run: npm run scrape
+
+      - name: Commit and push if data changed
+        run: |
+          git config user.name "exam-notify-bot"
+          git config user.email "actions@github.com"
+          if ! git diff --quiet -- data/exams.json; then
+            git add data/exams.json
+            git commit -m "chore: update exam notifications [automated]"
+            git push
+          else
+            echo "No changes to data/exams.json — nothing to commit."
+          fi
