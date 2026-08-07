@@ -1,6 +1,7 @@
-import CountdownTimer from "./CountdownTimer";
+import { useLang } from "./LanguageContext";
 
 export default function ExamCard({ exam, daysLeft, urgencyClasses, urgencyLabel, isNew }) {
+  const { t } = useLang();
   const days = daysLeft(exam.lastDate);
   const newFlag = isNew(exam.publishedDate);
 
@@ -18,7 +19,6 @@ export default function ExamCard({ exam, daysLeft, urgencyClasses, urgencyLabel,
 
   return (
     <div className="group block bg-white rounded-xl sm:rounded-2xl border border-navy-100 shadow-card hover:shadow-card-hover hover:border-navy-200 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden">
-      {/* Top accent */}
       <div className={`h-1 ${
         days !== null && days <= 7
           ? "bg-gradient-to-r from-danger-500 to-danger-400"
@@ -28,7 +28,6 @@ export default function ExamCard({ exam, daysLeft, urgencyClasses, urgencyLabel,
       }`} />
 
       <div className="p-3.5 sm:p-5">
-        {/* Top row */}
         <div className="flex items-center justify-between mb-2 sm:mb-3 gap-2">
           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap min-w-0">
             <span className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md sm:rounded-lg text-[10px] sm:text-[11px] font-bold border ${style.badge}`}>
@@ -43,22 +42,19 @@ export default function ExamCard({ exam, daysLeft, urgencyClasses, urgencyLabel,
           </div>
           {newFlag && (
             <span className="stamp-rotate bg-danger-500 text-white text-[8px] sm:text-[9px] font-black tracking-widest px-1.5 sm:px-2 py-0.5 rounded shadow-sm flex-shrink-0">
-              NEW
+              {t.new}
             </span>
           )}
         </div>
 
-        {/* Title */}
         <h3 className="font-bold text-[14px] sm:text-[15px] leading-snug text-navy-900 group-hover:text-navy-700 transition-colors mb-1.5 sm:mb-2 line-clamp-2">
           {exam.title}
         </h3>
 
-        {/* Salary */}
         {exam.salary && (
           <p className="text-[11px] sm:text-xs font-semibold text-ashoka-600 mb-1.5 sm:mb-2">{exam.salary}</p>
         )}
 
-        {/* Meta row */}
         <div className="flex items-center gap-2 sm:gap-3 mb-2.5 sm:mb-3 flex-wrap">
           {exam.refNo && (
             <span className="inline-flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-[11px] text-navy-500 font-mono">
@@ -79,7 +75,6 @@ export default function ExamCard({ exam, daysLeft, urgencyClasses, urgencyLabel,
           )}
         </div>
 
-        {/* Bottom: urgency + countdown + view details */}
         <div className="flex items-center justify-between pt-2.5 sm:pt-3 border-t border-navy-100/50 gap-2">
           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap min-w-0">
             <span className={`inline-flex items-center gap-1 sm:gap-1.5 font-semibold text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full ${urgencyClasses(days)}`}>
@@ -88,14 +83,18 @@ export default function ExamCard({ exam, daysLeft, urgencyClasses, urgencyLabel,
               }`} />
               {urgencyLabel(days)}
             </span>
-            {days !== null && days >= 0 && <CountdownTimer lastDate={exam.lastDate} />}
+            {days !== null && days >= 0 && (
+              <span className="text-[9px] sm:text-[10px] font-mono text-navy-400">
+                {days} {days === 1 ? t.dayLeft : t.daysLeft}
+              </span>
+            )}
           </div>
 
           <a
             href={`/job/${exam.id}`}
             className="inline-flex items-center gap-0.5 sm:gap-1 text-[11px] sm:text-xs font-semibold text-navy-600 group-hover:text-navy-800 transition-colors whitespace-nowrap flex-shrink-0"
           >
-            View
+            {t.view}
             <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>

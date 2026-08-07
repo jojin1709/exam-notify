@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
+import { useLang } from "./LanguageContext";
 
 export default function SavedJobs() {
   const [bookmarks, setBookmarks] = useState([]);
   const [show, setShow] = useState(false);
+  const { t } = useLang();
 
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("exam-bookmarks") || "[]");
-    setBookmarks(saved);
-  }, []);
+  useEffect(() => { setBookmarks(JSON.parse(localStorage.getItem("exam-bookmarks") || "[]")); }, []);
 
   const remove = (id) => {
     const updated = bookmarks.filter((b) => b.id !== id);
@@ -19,19 +18,11 @@ export default function SavedJobs() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-      <button
-        onClick={() => setShow(!show)}
-        className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-saffron-50 border border-saffron-200 rounded-xl text-saffron-700 text-xs sm:text-sm font-semibold hover:bg-saffron-100 transition-colors"
-      >
-        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-        </svg>
-        Saved Jobs ({bookmarks.length})
-        <svg className={`w-4 h-4 transition-transform ${show ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+      <button onClick={() => setShow(!show)} className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-saffron-50 border border-saffron-200 rounded-xl text-saffron-700 text-xs sm:text-sm font-semibold hover:bg-saffron-100 transition-colors">
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
+        {t.savedJobs} ({bookmarks.length})
+        <svg className={`w-4 h-4 transition-transform ${show ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
       </button>
-
       {show && (
         <div className="mt-3 bg-white rounded-xl border border-navy-100 shadow-card p-3 sm:p-4">
           <div className="space-y-2">
@@ -42,12 +33,8 @@ export default function SavedJobs() {
                   <p className="text-[10px] sm:text-[11px] text-navy-400">{b.source}</p>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <a href={`/job/${b.id}`} className="text-[11px] sm:text-xs font-medium text-navy-600 hover:text-navy-800">
-                    View
-                  </a>
-                  <button onClick={() => remove(b.id)} className="text-[11px] sm:text-xs text-danger-500 hover:text-danger-700">
-                    Remove
-                  </button>
+                  <a href={`/job/${b.id}`} className="text-[11px] sm:text-xs font-medium text-navy-600 hover:text-navy-800">{t.view}</a>
+                  <button onClick={() => remove(b.id)} className="text-[11px] sm:text-xs text-danger-500 hover:text-danger-700">{t.remove}</button>
                 </div>
               </div>
             ))}
