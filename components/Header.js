@@ -16,6 +16,8 @@ export default function Header({ totalExams, urgentCount }) {
             <span>No Login Required</span>
             <span className="w-1 h-1 rounded-full bg-white/30" />
             <span>Official Sources Only</span>
+            <span className="w-1 h-1 rounded-full bg-white/30" />
+            <span className="text-saffron-400/80">Built by <strong>JOJIN JOHN</strong></span>
           </div>
         </div>
       </div>
