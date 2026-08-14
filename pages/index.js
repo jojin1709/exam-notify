@@ -8,7 +8,6 @@ import EmptyState from "@/components/EmptyState";
 import Footer from "@/components/Footer";
 import SavedJobs from "@/components/SavedJobs";
 import PwaInstall from "@/components/PwaInstall";
-import PushNotify from "@/components/PushNotify";
 import EligibilityFilter from "@/components/EligibilityFilter";
 import { useLang } from "@/components/LanguageContext";
 
@@ -113,7 +112,7 @@ export default function Home({ exams }) {
   return (
     <>
       <Head>
-        <title>{t.siteName} \u2014 All India Government Job Notifications</title>
+        <title>{t.siteName} &mdash; All India Government Job Notifications</title>
         <meta name="description" content="Real-time government job notifications \u2014 UPSC, SSC, IBPS, Railways, Defense, State PSCs." />
         <meta property="og:title" content={t.siteName} />
         <meta property="og:description" content="UPSC, SSC, IBPS, Railways, Defense \u2014 real government job notifications, auto-updated." />
@@ -137,7 +136,6 @@ export default function Home({ exams }) {
       <main className="min-h-screen font-sans text-navy-900 bg-navy-50/30">
         <Header totalExams={exams.length} urgentCount={urgentCount} />
         <PwaInstall />
-        <PushNotify />
         <FilterBar categories={categories} category={category} setCategory={handleCategoryChange} query={query} setQuery={handleQueryChange} exams={exams} />
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8 lg:py-12">
           {/* Controls row */}
@@ -186,7 +184,7 @@ export default function Home({ exams }) {
                   ))}
                   <button onClick={() => setPage(Math.min(totalPages, page + 1))} disabled={page === totalPages}
                     className="px-2.5 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs font-semibold rounded-lg bg-navy-100 text-navy-600 hover:bg-navy-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
-                    Next \u2192
+                    Next &rarr;
                   </button>
                 </div>
               )}

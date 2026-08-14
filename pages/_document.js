@@ -27,6 +27,11 @@ export default function Document() {
         <meta name="twitter:image" content="https://exam-notify.vercel.app/og-image.svg" />
       </Head>
       <body>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}catch(e){}})();`,
+          }}
+        />
         <Main />
         <NextScript />
         <script
@@ -34,11 +39,7 @@ export default function Document() {
             __html: `
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                  navigator.serviceWorker.register('/sw.js').then(reg => {
-                    if ('Notification' in window && Notification.permission === 'default') {
-                      Notification.requestPermission();
-                    }
-                  });
+                  navigator.serviceWorker.register('/sw.js');
                 });
               }
             `,

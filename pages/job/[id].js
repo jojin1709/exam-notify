@@ -39,7 +39,7 @@ export default function JobDetail({ exam, allExams }) {
   return (
     <>
       <Head>
-        <title>{exam.title} \u2014 {t.siteName}</title>
+        <title>{exam.title} &mdash; {t.siteName}</title>
         <meta name="description" content={`${exam.source} notification \u2014 ${exam.title}. ${exam.salary ? `Salary: ${exam.salary}.` : ""} Apply before ${exam.lastDate || "deadline"}.`} />
         <meta property="og:title" content={exam.title} />
         <meta property="og:description" content={`${exam.source} \u2014 ${exam.title}`} />
