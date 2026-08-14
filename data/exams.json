@@ -598,5 +598,27 @@
     "url": "https://ibpsreg.ibps.in/sbijajul26/",
     "source": "IBPS",
     "location": "All India"
+  },
+  {
+    "id": "ibps-crp-po-mts-xv",
+    "title": "CRP-PO/MTs-XV",
+    "category": "Banking",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-14",
+    "url": "https://www.ibps.in/index.php/management-trainees-xv/",
+    "source": "IBPS",
+    "location": "All India"
+  },
+  {
+    "id": "ibps-provisional-allotment-under-reserve-list-for-crp-po-mts-xv",
+    "title": "Provisional Allotment under Reserve List for CRP-PO/MTs-XV",
+    "category": "Banking",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-08-14",
+    "url": "https://www.ibps.in/index.php/management-trainees-xv/",
+    "source": "IBPS",
+    "location": "All India"
   }
 ]
