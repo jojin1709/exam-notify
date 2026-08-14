@@ -1,6 +1,6 @@
 import { useLang } from "./LanguageContext";
 
-export default function FilterBar({ categories, category, setCategory, query, setQuery, exams }) {
+export default function FilterBar({ categories, category, setCategory, query, setQuery, exams, sources, source, setSource, locations, location, setLocation }) {
   const { t } = useLang();
 
   const categoryCounts = {};
@@ -36,6 +36,19 @@ export default function FilterBar({ categories, category, setCategory, query, se
               </button>
             );
           })}
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 mt-2">
+          <select value={source} onChange={(e) => setSource(e.target.value)}
+            className="px-3 py-2.5 text-sm bg-navy-50/50 border border-navy-200/50 rounded-xl focus:bg-white focus:border-navy-300 focus:ring-2 focus:ring-navy-100 text-navy-700 transition-all">
+            <option value="All">{t.allSources}</option>
+            {sources.filter((s) => s !== "All").map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <select value={location} onChange={(e) => setLocation(e.target.value)}
+            className="px-3 py-2.5 text-sm bg-navy-50/50 border border-navy-200/50 rounded-xl focus:bg-white focus:border-navy-300 focus:ring-2 focus:ring-navy-100 text-navy-700 transition-all">
+            <option value="All">{t.allLocations}</option>
+            {locations.filter((l) => l !== "All").map((l) => <option key={l} value={l}>{l}</option>)}
+          </select>
         </div>
 
         <div className="relative mt-2">

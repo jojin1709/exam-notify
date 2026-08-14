@@ -28,9 +28,10 @@ Government job aspirants miss deadlines because notifications are scattered acro
 ## Features
 
 - **Auto-updated** — Notifications refresh every hour automatically
-- **Multi-source** — Kerala PSC, UPSC, SSC, IBPS, RRB, Defense, State PSCs
+- **Multi-source** — Kerala PSC, TNPSC, UPSC, SSC, IBPS, RRB, SBI, RBI, Army, Navy, Air Force, Coast Guard, KVS, AIIMS
 - **Dark mode** — Toggle for comfortable night browsing (no flash on load)
 - **PWA** — Install as an app on your phone (icons, service worker, offline page)
+- **Push notifications** — Subscribe to browser notifications for new/urgent exams
 - **Multi-language** — English, Malayalam, Hindi, Tamil
 - **Share** — WhatsApp, Telegram, Twitter, copy link
 - **Bookmark** — Save jobs for later
@@ -38,8 +39,13 @@ Government job aspirants miss deadlines because notifications are scattered acro
 - **Countdown timer** — Live seconds countdown on each notification
 - **Salary info** — Pay scale displayed on cards and detail pages
 - **Eligibility filter** — Education, age limit, caste category filters
+- **Source & location filters** — Refine by exam board or state (filters persist in your browser)
 - **Exam pattern** — Written exam, interview details
+- **Selection process** — Prelims → Mains → Interview stages
+- **Application fee & vacancies** — Shown on every notification detail page
+- **Official PDF** — Direct download link to the official notification PDF when available
 - **Previous papers** — Download links for past year papers
+- **CSV export** — Download the filtered results as a CSV file
 - **Related jobs** — Suggested notifications on each detail page
 - **Calendar** — Add deadline to Google Calendar
 - **Job details** — Full info page for each notification
@@ -91,10 +97,12 @@ npm start
 
 The project ships with a multi-source scraper (`scripts/scrape.js`) that:
 
-- Scrapes Kerala PSC from static HTML
+- Scrapes Kerala PSC, TNPSC from static HTML
 - Uses Playwright for JS-rendered sites (UPSC, SSC, IBPS, RRB)
+- Scrapes static notification pages for Navy, Air Force, Coast Guard, SBI, RBI, KVS, AIIMS
 - Cleans titles, filters junk/navigation links, deduplicates entries
 - Parses deadlines and registration dates where available
+- Enriches each entry with salary, eligibility, age, education, exam pattern, selection process, application fee, vacancies and nationality defaults per source
 - Merges new items with the existing `data/exams.json`, preserving publish dates
 
 ### Run the scraper locally
@@ -157,6 +165,51 @@ GET /api/rss
 ```
 GET /sitemap.xml
 ```
+
+## Push Notifications
+
+The site supports browser push notifications. A floating "Enable Notifications" button appears on the homepage; tapping it asks for permission and subscribes the device.
+
+### Push API
+
+```
+GET  /api/push/vapid       # public VAPID key for the browser
+POST /api/push/subscribe   # save a subscription (body: push subscription JSON)
+POST /api/push/send        # send a notification to all subscribers
+```
+
+`/api/push/send` accepts:
+
+```json
+{ "title": "New UPSC Notification", "body": "CSE 2026 applications open", "url": "/job/upsc-cse-2026" }
+```
+
+### VAPID keys
+
+Generate a key pair once:
+
+```bash
+npx web-push generate-vapid-keys
+```
+
+Then set these environment variables:
+
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Public VAPID key (safe to expose to the browser) |
+| `VAPID_PRIVATE_KEY` | Private VAPID key (keep secret!) |
+| `VAPID_SUBJECT` | Contact e.g. `mailto:you@example.com` |
+
+### Subscription storage
+
+Subscriptions are stored in `data/push-subs.json` by default (this file is git-ignored). For a production multi-instance deployment, provide a [Upstash Redis](https://upstash.com) database and set:
+
+| Variable | Purpose |
+| --- | --- |
+| `UPSTASH_REDIS_REST_URL` | Upstash REST URL |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash REST token |
+
+When Redis is configured, subscriptions are stored in a `push-subscriptions` set instead of the local file.
 
 ## Data
 

@@ -12,7 +12,7 @@ const TIMEOUT = 20000;
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
 // Titles/links that are navigation pages, not job notifications
-const JUNK_RE = /about-?us|background|setup\s*of|function\s*of|vision|mission|objectives|old\s+website|policies|guidelines|rules\s*&|social\s+responsibility|debarred|recruitment\s+exams?|^recruitment$|contact\s*us|^faq$|^rti$|^sitemap$|^home$|feedback|privacy|terms\s+of|disclaimer|^advertisement$|photo\s*gallery|citizen\s*charter/i;
+const JUNK_RE = /about-?us|background|setup\s*of|function\s*of|vision|mission|objectives|old\s+website|policies|guidelines|rules\s*&|social\s+responsibility|debarred|recruitment\s+exams?|^recruitment$|contact\s*us|^faq$|^rti$|^sitemap$|^home$|feedback|privacy|terms\s+of|disclaimer|^advertisement$|photo\s*gallery|citizen\s*charter|gazette|extra\s*ordinary|scheme\s+of\s+examination|examination\s+calendar|tentative\s+vacancy|scribe\s+procedure|browse\s+by\s+examinations/i;
 
 function cleanText(str) {
   return (str || "").replace(/\s+/g, " ").trim();
@@ -53,9 +53,99 @@ function makeId(source, title, url) {
   return `${slugify(source)}-x${(h >>> 0).toString(36)}`;
 }
 
+// Default details per source, applied when scraping does not provide them.
+// Keeps cards/detail pages informative and enables eligibility filtering everywhere.
+const ENRICHMENT = {
+  "Kerala PSC": {
+    salary: "₹19,900 - ₹63,200 (Level 10-12)", eligibility: "Degree from a recognized university, Age 18-36",
+    education: "graduation", age: "18-36", caste: "all",
+    examPattern: "Written Exam (OMR) + Interview", selectionProcess: "Written Exam → Interview",
+    applicationFee: "₹0", vacancies: "Multiple", nationality: "Indian",
+  },
+  "UPSC": {
+    salary: "₹56,100 - ₹1,77,500 (Level 10)", eligibility: "Bachelor's Degree from a recognized university",
+    education: "graduation", age: "21-32", caste: "all",
+    examPattern: "Prelims (Objective) + Mains (Descriptive) + Interview", selectionProcess: "Prelims → Mains → Interview",
+    applicationFee: "₹100", vacancies: "Varies by examination", nationality: "Indian",
+  },
+  "SSC": {
+    salary: "Pay Level 3-10 depending on post", eligibility: "10th/12th/Graduate depending on post",
+    education: "12th", age: "18-30", caste: "all",
+    examPattern: "Tier 1 (CBT) + Tier 2 (CBT)", selectionProcess: "CBT Tier 1 → CBT Tier 2 → Skill/DV",
+    applicationFee: "₹100", vacancies: "Varies by post", nationality: "Indian",
+  },
+  "IBPS": {
+    salary: "₹23,700 - ₹42,020 (Clerk) / ₹36,000 - ₹63,840 (PO)", eligibility: "Graduate from a recognized university",
+    education: "graduation", age: "20-30", caste: "all",
+    examPattern: "Prelims + Mains + Interview", selectionProcess: "Prelims → Mains → Interview/DV",
+    applicationFee: "₹850 (Gen/OBC)", vacancies: "Varies by CRP", nationality: "Indian",
+  },
+  "RRB": {
+    salary: "Pay Level 1-6 depending on post", eligibility: "10th/ITI/12th/Diploma depending on post",
+    education: "10th", age: "18-33", caste: "all",
+    examPattern: "CBT 1 + CBT 2 + Typing/AV test", selectionProcess: "CBT 1 → CBT 2 → Skill/Medical",
+    applicationFee: "₹500", vacancies: "Varies by zone", nationality: "Indian",
+  },
+  "Indian Army": {
+    salary: "Pay Level 3+ depending on entry", eligibility: "10th/12th/Graduate depending on entry",
+    education: "12th", age: "17.5-25", caste: "all",
+    examPattern: "Written + Physical Test + Medical", selectionProcess: "Written → Physical → Medical",
+    applicationFee: "₹0", vacancies: "Varies by entry", nationality: "Indian",
+  },
+  "Indian Navy": {
+    salary: "Pay Level 3+ depending on entry", eligibility: "10th/12th/Graduate depending on entry",
+    education: "12th", age: "17.5-25", caste: "all",
+    examPattern: "Written + Physical Test + Medical", selectionProcess: "Written → Physical → Medical",
+    applicationFee: "₹0", vacancies: "Varies by entry", nationality: "Indian",
+  },
+  "Indian Air Force": {
+    salary: "Pay Level 3+ depending on entry", eligibility: "10th/12th/Graduate depending on entry",
+    education: "12th", age: "17.5-25", caste: "all",
+    examPattern: "Written + Physical Test + Medical", selectionProcess: "Written → Physical → Medical",
+    applicationFee: "₹0", vacancies: "Varies by entry", nationality: "Indian",
+  },
+  "Indian Coast Guard": {
+    salary: "Pay Level 3+ depending on entry", eligibility: "10th/12th/Graduate depending on entry",
+    education: "12th", age: "18-22", caste: "all",
+    examPattern: "Written + Physical Test + Medical", selectionProcess: "Written → Physical → Medical",
+    applicationFee: "₹0", vacancies: "Varies by entry", nationality: "Indian",
+  },
+  "SBI": {
+    salary: "₹41,960 - ₹63,840 (PO) / ₹27,720 - ₹42,020 (Clerk)", eligibility: "Graduate from a recognized university",
+    education: "graduation", age: "20-30", caste: "all",
+    examPattern: "Prelims + Mains + Interview", selectionProcess: "Prelims → Mains → Interview/DV",
+    applicationFee: "₹750 (Gen/OBC)", vacancies: "Varies by post", nationality: "Indian",
+  },
+  "RBI": {
+    salary: "₹45,050 - ₹89,940 (Officer Grade B)", eligibility: "Graduate/Post Graduate depending on post",
+    education: "graduation", age: "21-30", caste: "all",
+    examPattern: "Phase 1 + Phase 2 + Interview", selectionProcess: "Phase 1 → Phase 2 → Interview",
+    applicationFee: "₹850 (Gen/OBC)", vacancies: "Varies by post", nationality: "Indian",
+  },
+  "KVS": {
+    salary: "Pay Level 4-8 depending on post", eligibility: "Graduate + B.Ed (Teacher posts)",
+    education: "graduation", age: "18-40", caste: "all",
+    examPattern: "CBT + Interview/Trade Test", selectionProcess: "CBT → Interview",
+    applicationFee: "₹1,000 (Gen/OBC)", vacancies: "Varies by post", nationality: "Indian",
+  },
+  "AIIMS": {
+    salary: "Pay Level 6+ depending on post", eligibility: "Post Graduate/Medical degree depending on post",
+    education: "post-graduation", age: "18-40", caste: "all",
+    examPattern: "Written + Interview", selectionProcess: "Written → Interview",
+    applicationFee: "₹1,500 (Gen/OBC)", vacancies: "Varies by post", nationality: "Indian",
+  },
+  "TNPSC": {
+    salary: "Pay Level 12+ depending on post", eligibility: "Graduate/Post Graduate depending on post",
+    education: "graduation", age: "18-32", caste: "all",
+    examPattern: "Prelims + Mains + Interview", selectionProcess: "Prelims → Mains → Interview",
+    applicationFee: "₹200 (Gen/OBC)", vacancies: "Varies by notification", nationality: "Indian",
+  },
+};
+
 function finalizeItems(rawItems, source, category, location, fallbackUrl = "") {
   const seen = new Set();
   const out = [];
+  const extra = ENRICHMENT[source] || {};
   for (const item of rawItems) {
     const title = cleanText(item.title);
     const url = item.url || fallbackUrl;
@@ -66,6 +156,7 @@ function finalizeItems(rawItems, source, category, location, fallbackUrl = "") {
     if (seen.has(id)) continue;
     seen.add(id);
     out.push({
+      ...extra,
       id,
       title,
       category,
@@ -249,6 +340,42 @@ async function scrapeDefense() {
   }
 }
 
+// ─── Config-driven static scrapers (news/notices sections) ────────
+const STATIC_SOURCES = [
+  { name: "Indian Navy", category: "Defense", location: "All India", base: "https://www.joinindiannavy.gov.in", url: "https://www.joinindiannavy.gov.in/en/news-and-events.html", selector: "a", keyword: /recruit|notification|apply|sailor|agniveer|ssr|mr|aa|je|officer|entry/i },
+  { name: "Indian Air Force", category: "Defense", location: "All India", base: "https://indianairforce.nic.in", url: "https://indianairforce.nic.in/", selector: "a", keyword: /recruit|notification|apply|agniveer|airman|officer|entry|eligibility/i },
+  { name: "Indian Coast Guard", category: "Defense", location: "All India", base: "https://joinindiancoastguard.cdac.in", url: "https://joinindiancoastguard.cdac.in/", selector: "a", keyword: /recruit|notification|apply|navik|yantrik|assistant|officer|entry/i },
+  { name: "SBI", category: "Banking", location: "All India", base: "https://sbi.co.in", url: "https://sbi.co.in/web/careers/current-openings", selector: "a", keyword: /recruit|notification|apply|cadre|officer|associate|clerk|specialist|vacancy/i },
+  { name: "RBI", category: "Banking", location: "All India", base: "https://www.rbi.org.in", url: "https://www.rbi.org.in/Scripts/BS_ViewNotifications.aspx", selector: "a", keyword: /recruit|apply|notification|officer|assistant|grade|vacancy/i },
+  { name: "KVS", category: "Education", location: "All India", base: "https://kvsangathan.nic.in", url: "https://kvsangathan.nic.in/", selector: "a", keyword: /recruit|notification|apply|teacher|principal|vacancy|vacancies/i },
+  { name: "AIIMS", category: "Health", location: "All India", base: "https://www.aiims.edu", url: "https://www.aiims.edu/en/recruitment.html", selector: "a", keyword: /recruit|notification|apply|vacancy|faculty|officer|nurse/i },
+  { name: "TNPSC", category: "State PSC", location: "Tamil Nadu", base: "https://www.tnpsc.gov.in", url: "https://www.tnpsc.gov.in/", selector: "a", keyword: /notification|recruit|apply|exam|vacancy|group/i },
+];
+
+async function scrapeStaticLinks(cfg) {
+  try {
+    const { data: html } = await axios.get(cfg.url, { headers: { "User-Agent": UA }, timeout: TIMEOUT });
+    const $ = cheerio.load(html);
+    const host = new URL(cfg.base).hostname;
+    const raw = [];
+    $(cfg.selector).each((_, el) => {
+      const title = cleanText($(el).text());
+      const href = $(el).attr("href") || "";
+      if (title.length < 12) return;
+      if (JUNK_RE.test(title)) return;
+      if (/^(#|javascript:|mailto:)/.test(href)) return;
+      if (!cfg.keyword.test(title)) return;
+      if (href.startsWith("http") && !href.includes(host)) return;
+      let fullUrl = href.startsWith("http") ? href : `${cfg.base}${href.startsWith("/") ? "" : "/"}${href}`;
+      raw.push({ title, url: fullUrl });
+    });
+    return finalizeItems(raw, cfg.name, cfg.category, cfg.location, cfg.url);
+  } catch (err) {
+    console.error(`  ${cfg.name} failed: ${err.message}`);
+    return [];
+  }
+}
+
 // ─── Main merge logic ────────────────────────────────────────────
 async function main() {
   const scrapers = [
@@ -257,7 +384,8 @@ async function main() {
     { name: "SSC", fn: scrapeSsc },
     { name: "IBPS", fn: scrapeIbps },
     { name: "RRB", fn: scrapeRrb },
-    { name: "Defense", fn: scrapeDefense },
+    { name: "Indian Army", fn: scrapeDefense },
+    ...STATIC_SOURCES.map((cfg) => ({ name: cfg.name, fn: () => scrapeStaticLinks(cfg) })),
   ];
 
   let allScraped = [];

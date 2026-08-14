@@ -13,6 +13,7 @@ export default function ExamCard({ exam, daysLeft, urgencyClasses, urgencyLabel,
     Defense: { badge: "bg-amber-50 text-amber-700 border-amber-200", dot: "bg-amber-500" },
     "State PSC": { badge: "bg-violet-50 text-violet-700 border-violet-200", dot: "bg-violet-500" },
     Education: { badge: "bg-cyan-50 text-cyan-700 border-cyan-200", dot: "bg-cyan-500" },
+    Health: { badge: "bg-teal-50 text-teal-700 border-teal-200", dot: "bg-teal-500" },
   };
 
   const style = categoryStyles[exam.category] || { badge: "bg-navy-50 text-navy-700 border-navy-200", dot: "bg-navy-500" };

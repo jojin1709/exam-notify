@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Head from "next/head";
 import examsData from "@/data/exams.json";
 import Header from "@/components/Header";
@@ -8,10 +8,22 @@ import EmptyState from "@/components/EmptyState";
 import Footer from "@/components/Footer";
 import SavedJobs from "@/components/SavedJobs";
 import PwaInstall from "@/components/PwaInstall";
+import PushNotify from "@/components/PushNotify";
 import EligibilityFilter from "@/components/EligibilityFilter";
+import ExportCsv from "@/components/ExportCsv";
 import { useLang } from "@/components/LanguageContext";
 
 const PAGE_SIZE = 10;
+const FILTERS_KEY = "exam-filters";
+
+function loadSavedFilters() {
+  if (typeof window === "undefined") return null;
+  try {
+    return JSON.parse(localStorage.getItem(FILTERS_KEY));
+  } catch {
+    return null;
+  }
+}
 
 function daysLeft(dateStr) {
   if (!dateStr) return null;
@@ -50,21 +62,44 @@ function extractSalaryNum(salary) {
 }
 
 export default function Home({ exams }) {
-  const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("All");
-  const [eligFilters, setEligFilters] = useState({ education: "all", age: "all", caste: "all" });
-  const [sortBy, setSortBy] = useState("newest");
+  const saved = loadSavedFilters();
+  const [query, setQuery] = useState(saved?.query || "");
+  const [category, setCategory] = useState(saved?.category || "All");
+  const [source, setSource] = useState(saved?.source || "All");
+  const [location, setLocation] = useState(saved?.location || "All");
+  const [eligFilters, setEligFilters] = useState(saved?.elig || { education: "all", age: "all", caste: "all" });
+  const [sortBy, setSortBy] = useState(saved?.sortBy || "newest");
   const [page, setPage] = useState(1);
   const { t } = useLang();
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(FILTERS_KEY, JSON.stringify({ query, category, source, location, elig: eligFilters, sortBy }));
+    } catch {
+      // storage unavailable
+    }
+  }, [query, category, source, location, eligFilters, sortBy]);
 
   const categories = useMemo(() => {
     const set = new Set(exams.map((e) => e.category).filter(Boolean));
     return ["All", ...Array.from(set)];
   }, [exams]);
 
+  const sources = useMemo(() => {
+    const set = new Set(exams.map((e) => e.source).filter(Boolean));
+    return ["All", ...Array.from(set)];
+  }, [exams]);
+
+  const locations = useMemo(() => {
+    const set = new Set(exams.map((e) => e.location || "All India").filter(Boolean));
+    return ["All", ...Array.from(set)];
+  }, [exams]);
+
   const filtered = useMemo(() => {
     return exams
       .filter((e) => (category === "All" ? true : e.category === category))
+      .filter((e) => (source === "All" ? true : e.source === source))
+      .filter((e) => (location === "All" ? true : (e.location || "All India") === location))
       .filter((e) => query.trim() === "" ? true : `${e.title} ${e.refNo} ${e.source} ${e.location || ""}`.toLowerCase().includes(query.trim().toLowerCase()))
       .filter((e) => {
         if (eligFilters.education !== "all" && e.education && e.education !== eligFilters.education) return false;
@@ -96,7 +131,7 @@ export default function Home({ exams }) {
         if (pubDiff !== 0) return pubDiff;
         return (a.lastDate ? new Date(a.lastDate) : new Date("9999-12-31")) - (b.lastDate ? new Date(b.lastDate) : new Date("9999-12-31"));
       });
-  }, [exams, query, category, eligFilters, sortBy]);
+  }, [exams, query, category, source, location, eligFilters, sortBy]);
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -105,6 +140,8 @@ export default function Home({ exams }) {
 
   // Reset page when filters change
   const handleCategoryChange = (c) => { setCategory(c); setPage(1); };
+  const handleSourceChange = (s) => { setSource(s); setPage(1); };
+  const handleLocationChange = (l) => { setLocation(l); setPage(1); };
   const handleQueryChange = (q) => { setQuery(q); setPage(1); };
   const handleSortChange = (s) => { setSortBy(s); setPage(1); };
   const handleFilterChange = (f) => { setEligFilters(f); setPage(1); };
@@ -136,15 +173,19 @@ export default function Home({ exams }) {
       <main className="min-h-screen font-sans text-navy-900 bg-navy-50/30">
         <Header totalExams={exams.length} urgentCount={urgentCount} />
         <PwaInstall />
-        <FilterBar categories={categories} category={category} setCategory={handleCategoryChange} query={query} setQuery={handleQueryChange} exams={exams} />
+        <FilterBar categories={categories} category={category} setCategory={handleCategoryChange} query={query} setQuery={handleQueryChange} exams={exams}
+          sources={sources} source={source} setSource={handleSourceChange} locations={locations} location={location} setLocation={handleLocationChange} />
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8 lg:py-12">
           {/* Controls row */}
           <div className="flex items-center justify-between mb-4 sm:mb-6 gap-2 flex-wrap">
             <p className="text-[11px] sm:text-sm text-navy-500 min-w-0">
               <span className="font-semibold text-navy-700">{filtered.length}</span> {t.notifications}
               {category !== "All" && <> in <span className="font-semibold text-navy-700">{category}</span></>}
+              {source !== "All" && <> {"\u00b7"} <span className="font-semibold text-navy-700">{source}</span></>}
+              {location !== "All" && <> {"\u00b7"} <span className="font-semibold text-navy-700">{location}</span></>}
             </p>
             <div className="flex items-center gap-2">
+              <ExportCsv exams={filtered} label={t.exportCsv} />
               {/* Sort dropdown */}
               <select value={sortBy} onChange={(e) => handleSortChange(e.target.value)}
                 className="px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium bg-navy-50 border border-navy-200 rounded-lg text-navy-600 focus:outline-none focus:border-navy-400">
@@ -193,6 +234,7 @@ export default function Home({ exams }) {
         </section>
         <SavedJobs />
         <Footer />
+        <PushNotify />
       </main>
     </>
   );
