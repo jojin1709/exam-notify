@@ -19,7 +19,7 @@ Real-time notifications from UPSC, SSC, IBPS, Railways, Defense, State PSCs — 
 
 Exam Notice Board is an automated government job notification tracker for India. It scrapes exam notifications from official government websites and displays them in a clean, searchable interface.
 
-The scraper runs every hour, fetches fresh notifications, and the website auto-updates — zero manual work required.
+The scraper runs every hour via GitHub Actions, fetches fresh notifications, and the website auto-updates — zero manual work required.
 
 ### Why It Exists
 
@@ -29,8 +29,8 @@ Government job aspirants miss deadlines because notifications are scattered acro
 
 - **Auto-updated** — Notifications refresh every hour automatically
 - **Multi-source** — Kerala PSC, UPSC, SSC, IBPS, RRB, Defense, State PSCs
-- **Dark mode** — Toggle for comfortable night browsing
-- **PWA** — Install as an app on your phone
+- **Dark mode** — Toggle for comfortable night browsing (no flash on load)
+- **PWA** — Install as an app on your phone (icons, service worker, offline page)
 - **Multi-language** — English, Malayalam, Hindi, Tamil
 - **Share** — WhatsApp, Telegram, Twitter, copy link
 - **Bookmark** — Save jobs for later
@@ -48,31 +48,65 @@ Government job aspirants miss deadlines because notifications are scattered acro
 - **API & RSS** — For developers and feed readers
 - **Mobile-first** — Fully responsive design for all devices
 
+## Tech Stack
+
+- **Framework** — [Next.js 14](https://nextjs.org) (Pages Router, ISR for static regeneration)
+- **Styling** — Tailwind CSS
+- **Scraping** — Playwright (JS-rendered sites), Axios + Cheerio (static HTML)
+- **Auto-update** — GitHub Actions scheduled workflow (hourly cron)
+- **Deployment** — Vercel
+
 ## Live Demo
 
 **[https://exam-notify.vercel.app](https://exam-notify.vercel.app)**
 
-## How It Works
+## Getting Started
 
-```text
-┌─────────────────────┐
-│   Auto-Scraper      │
-│   (runs every hour) │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│   Official Govt     │
-│   Websites          │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│   Live Website      │
-│   exam-notify.      │
-│   vercel.app        │
-└─────────────────────┘
+### Prerequisites
+
+- Node.js 18.17+ (or 20+)
+
+### Install
+
+```bash
+npm install
 ```
+
+### Run locally
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+### Production build
+
+```bash
+npm run build
+npm start
+```
+
+## Scraping
+
+The project ships with a multi-source scraper (`scripts/scrape.js`) that:
+
+- Scrapes Kerala PSC from static HTML
+- Uses Playwright for JS-rendered sites (UPSC, SSC, IBPS, RRB)
+- Cleans titles, filters junk/navigation links, deduplicates entries
+- Parses deadlines and registration dates where available
+- Merges new items with the existing `data/exams.json`, preserving publish dates
+
+### Run the scraper locally
+
+```bash
+npx playwright install chromium   # first time only
+npm run scrape
+```
+
+### Automated hourly scraping
+
+A [GitHub Actions workflow](.github/workflows/scrape.yml) runs the scraper every hour and commits any changes to `data/exams.json`, which triggers a fresh Vercel build automatically.
 
 ## API
 
@@ -88,10 +122,28 @@ GET /api/jobs
 GET /api/jobs?category=UPSC
 ```
 
+### Filter by Source
+
+```
+GET /api/jobs?source=IBPS
+```
+
+### Filter by Location
+
+```
+GET /api/jobs?location=Kerala
+```
+
 ### Search
 
 ```
 GET /api/jobs?search=civil+services
+```
+
+All filters can be combined:
+
+```
+GET /api/jobs?category=Banking&search=clerk
 ```
 
 ### RSS Feed
@@ -99,6 +151,16 @@ GET /api/jobs?search=civil+services
 ```
 GET /api/rss
 ```
+
+### Sitemap
+
+```
+GET /sitemap.xml
+```
+
+## Data
+
+Notifications are a combination of curated entries and automatically scraped notifications from official government sources. Fields such as salary, eligibility, exam pattern, and previous-paper links are included when available.
 
 ## Disclaimer
 
