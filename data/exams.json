@@ -814,5 +814,26 @@
     "url": "https://indianairforce.nic.in/notification-detail?notiid=WVBJaU1HM1phZHJFUEpvQ1FlVzRTUT09",
     "source": "Indian Air Force",
     "location": "All India"
+  },
+  {
+    "salary": "Pay Level 3+ depending on entry",
+    "eligibility": "10th/12th/Graduate depending on entry",
+    "education": "12th",
+    "age": "18-22",
+    "caste": "all",
+    "examPattern": "Written + Physical Test + Medical",
+    "selectionProcess": "Written → Physical → Medical",
+    "applicationFee": "₹0",
+    "vacancies": "Varies by entry",
+    "nationality": "Indian",
+    "id": "indian-coast-guard-join-icg-as-officers-cgcat",
+    "title": "Join ICG as Officers (CGCAT)",
+    "category": "Defense",
+    "refNo": "",
+    "lastDate": null,
+    "publishedDate": "2026-10-11",
+    "url": "https://joinindiancoastguard.cdac.in/cgcat/",
+    "source": "Indian Coast Guard",
+    "location": "All India"
   }
 ]
